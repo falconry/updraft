@@ -1,0 +1,6 @@
+flaky
+pytest
+pytest-xprocess
+requests
+
+-e .
