@@ -5,8 +5,21 @@
 """
 
 import requests
-
 from flaky import flaky
+
+
+def test_broken_app_returns_500_response(test_server):
+    server = test_server(
+        """
+        class Resource(object):
+            def on_get(self, req, resp):
+                assert False
+        """
+    )
+
+    resp = requests.get('http://{}/resource'.format(server.addr))
+    assert resp.status_code == 500
+    assert 'Internal Server Error' in resp.text
 
 
 # TODO(csojinb): Figure out why this test flakes and fix it.

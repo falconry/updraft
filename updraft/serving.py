@@ -25,6 +25,7 @@ from ._internal import _log
 from ._compat import reraise, wsgi_encoding_dance
 from ._reloader import is_running_from_reloader
 from .urls import url_parse, url_unquote
+from .middleware import BlanketErrorHandlerMiddleware
 
 
 class WSGIRequestHandler(BaseHTTPRequestHandler, object):
@@ -267,6 +268,7 @@ def run_simple(hostname, port, application, use_reloader=False,
                          process if modules were changed?
     :param reloader_interval: the interval for the reloader in seconds.
     """
+    application = BlanketErrorHandlerMiddleware(application)
 
     def run_server():
         BaseWSGIServer(hostname, port, application).serve_forever()
