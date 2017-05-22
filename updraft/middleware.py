@@ -33,3 +33,17 @@ class BlanketErrorHandlerMiddleware(BasicMiddleware):
             title='500 Internal Server Error',
             description=tb)
 
+
+class PdbDebugMiddleware(BasicMiddleware):
+
+    """WSGI middleware that enables pdb post-mortems for a given application"""
+
+    def __init__(self, app, debug_method=pdb.post_mortem):
+        self.debug_method = debug_method
+        app.add_error_handler(Exception, self.debug)
+        self.app = app
+
+    def debug(self, ex, req, resp, params):
+        self.debug_method()
+        BlanketErrorHandlerMiddleware.handle_uncaught_exceptions(
+            ex, req, resp, params)

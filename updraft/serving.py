@@ -258,8 +258,9 @@ class BaseWSGIServer(HTTPServer, object):
 
 
 def run_simple(hostname, port, application, use_reloader=False,
-               reloader_interval=1, **kwargs):
-    """Start a WSGI application. Optionally auto-reload on code change.
+               reloader_interval=1, use_debugger=False, debug_method=None):
+    """Start a WSGI application. Optionally auto-reload on code change, drop
+    into debugger on error.
 
     :param hostname: The host for the application.  eg: ``'localhost'``
     :param port: The port for the server.  eg: ``8080``
@@ -267,8 +268,15 @@ def run_simple(hostname, port, application, use_reloader=False,
     :param use_reloader: should the server automatically restart the python
                          process if modules were changed?
     :param reloader_interval: the interval for the reloader in seconds.
+    :param use_debugger: drop into debugger on application error?
+    :param debug_method: method to run on application error. must be supplied
+                         if use_debugger == True
     """
-    application = BlanketErrorHandlerMiddleware(application)
+    if use_debugger:
+        from .middleware import PdbDebugMiddleware
+        application = PdbDebugMiddleware(application, debug_method)
+    else:
+        application = BlanketErrorHandlerMiddleware(application)
 
     def run_server():
         BaseWSGIServer(hostname, port, application).serve_forever()

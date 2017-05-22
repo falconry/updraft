@@ -22,6 +22,37 @@ def test_broken_app_returns_500_response(test_server):
     assert 'Internal Server Error' in resp.text
 
 
+from falcon.errors import HTTPError
+from falcon.status_codes import HTTP_418
+
+
+class HTTPTeapot(HTTPError):
+    def __init__(self, description='short and stout', **kwargs):
+        super(HTTPTeapot, self).__init__(
+            HTTP_418, "I'm a teapot", description, **kwargs)
+
+
+def test_broken_app_runs_debug_method_if_debugger_set(test_server):
+    server = test_server(
+        """
+        from tests.test_serving import HTTPTeapot
+
+        class Resource(object):
+            def on_get(self, req, resp):
+                assert False
+
+        def debug_method():
+            raise HTTPTeapot()
+
+        kwargs['use_debugger'] = True
+        kwargs['debug_method'] = debug_method
+        """
+    )
+
+    resp = requests.get('http://{}/resource'.format(server.addr))
+    assert resp.status_code == 418
+
+
 # TODO(csojinb): Figure out why this test flakes and fix it.
 @flaky
 def test_application_reloads_when_code_changes(test_server):
