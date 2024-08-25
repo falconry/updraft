@@ -14,8 +14,8 @@ dependencies = [
 requires-python = ">=3.8"
 description = "Python WSGI and ASGI development server, optimized for API development and command-line usage."
 authors = [
-  {name = "Clara Bennett", email="csojinb@gmail.com>"},
-  {name = "Kurt Griffiths", email = "vytautas.liuolia@gmail.com"},
+  {name = "Clara Bennett", email="csojinb@gmail.com"},
+  {name = "Kurt Griffiths", email = "mail@kgriffs.com"},
 ]
 maintainers = [
   {name = "Vytautas Liuolia", email = "vytautas.liuolia@gmail.com"},
