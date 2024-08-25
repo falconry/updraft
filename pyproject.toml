@@ -1,0 +1,94 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+    "setuptools>=47",
+]
+
+[project]
+name = "updraft"
+readme = "README.md"
+dynamic = ["version"]
+dependencies = [
+  "falcon >= 3.1.0",
+]
+requires-python = ">=3.8"
+description = "Python WSGI and ASGI development server, optimized for API development and command-line usage."
+authors = [
+  {name = "Clara Bennett", email="csojinb@gmail.com>"},
+  {name = "Kurt Griffiths", email = "vytautas.liuolia@gmail.com"},
+]
+maintainers = [
+  {name = "Vytautas Liuolia", email = "vytautas.liuolia@gmail.com"},
+]
+license = {text = "Apache 2.0"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Natural Language :: English",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Topic :: Internet :: WWW/HTTP :: WSGI",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+keywords = [
+    "asgi",
+    "wsgi",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/falconry/updraft"
+"Funding" = "https://opencollective.com/falcon"
+"Chat" = "https://gitter.im/falconry/user"
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+
+[tool.setuptools.dynamic]
+version = {attr = "updraft.version.__version__"}
+
+[tool.setuptools.packages.find]
+exclude = ["tests"]
+
+[tool.ruff]
+target-version = "py38"
+format.quote-style = "single"
+line-length = 79
+
+[tool.ruff.lint]
+select = [
+  "C9",
+  "E",
+  "F",
+  "W",
+  "I"
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15
+
+[tool.ruff.lint.isort]
+case-sensitive = false
+force-single-line = true
+order-by-type = false
+single-line-exclusions = [
+  "typing",
+]
+force-sort-within-sections = true
+
+[tool.pytest]
+testpaths = [
+    "tests",
+]
